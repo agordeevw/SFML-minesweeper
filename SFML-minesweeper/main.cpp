@@ -1,24 +1,27 @@
-#include <iostream>
-#include <map>
-#include <string>
-
 #include <SFML/Graphics.hpp>
+#include <SOIL.h>
 
+#include "cellSheetData.h"
 #include "Game.h"
 
 void main()
 {
-	std::map<std::string, sf::Texture> textures;
+	sf::Image image;
+	image.create(260, 20, pixelData);
 
-	// Load all necessary textures
-	textures["cellSheet"].loadFromFile("Resources/Textures/cells.png");
-	textures["cellSheet"].generateMipmap();
+	sf::Image icon;
+	icon.create(20, 20, sf::Color(255, 255, 255, 255));
+	
+	sf::Texture cellSheet;
+	cellSheet.loadFromImage(image);
 
 	// Initialize window
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Minesweep!", sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(600, 400), "Minesweep!", sf::Style::Close);
 	window.setVerticalSyncEnabled(true);
 
-	game::Game game(window, textures["cellSheet"], 10, 10);
+	window.setIcon(20, 20, icon.getPixelsPtr());
+
+	game::Game game(window, cellSheet, 30, 20);
 
 	while (window.isOpen())
 	{

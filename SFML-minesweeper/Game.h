@@ -21,8 +21,8 @@ namespace game
 
 	class Game
 	{
-		enum GameState { Active, Menu, Win, Loss };
-		enum CellTiles  { Closed, SemiClosed, Checked, ZeroMines, Mine = 12, RedMine };
+		enum GameState { Active, Win, Loss };
+		enum CellTiles  { Closed, SemiClosed, Checked, ZeroMines, Mine = 12};
 
 		GameState state;
 
@@ -37,9 +37,9 @@ namespace game
 
 		MouseArgs mouseArgs;
 
-		Field field;
-
+		// true if no click happened after latest transition to active game state
 		bool firstClick;
+		Field field;
 
 		int lostCellX, lostCellY;
 

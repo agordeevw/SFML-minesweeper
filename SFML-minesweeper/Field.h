@@ -16,18 +16,13 @@ namespace game {
 		std::vector<uint8_t> cells;
 	
 	public:
-		// This constructor is used only when game is initialized
-		// Field is reinitialized with specialized constructor later
-		Field() {};
-
-		Field(uint32_t width, uint32_t height) :
+		// Generates empty field
+		// Call reset() to generate mines and prepare field to be playable
+		Field(uint32_t width, uint32_t height):
 			width(width),
 			height(height),
 			cells(width * height)
-		{
-			generateMines(0.2f);
-			calcCellMineCount();
-		}
+		{}
 
 		Field(const Field& field) = default;
 
@@ -61,8 +56,8 @@ namespace game {
 		// Does nothing if specified cell is open.
 		void swapCheck(uint32_t column, uint32_t row);
 
-		// Opens all cells on the field
-		void open();
+		// Opens all cells with unchecked mines
+		void openUncheckedMines();
 
 		// Marks specified cell as open if it isn't open or isn't checked.
 		// If cell has no mines near it, opens all neighbouring cells.
@@ -73,10 +68,11 @@ namespace game {
 		// and every cell without mine is open.
 		bool checkWinCondition() const;
 
+		// Regenerates field so that there's no mine at specified position.
+		// If keepChecked is true, "checked" flags are saved.
+		void reset(uint32_t startCol, uint32_t startRow, bool keepChecked = false);
+
 	private:
-		// Generates mines on the field with each mine probability of existence
-		// equal to minesProba.
-		void generateMines(float_t minesProba);
 
 		// Calculates number of mines in close cells for every cell on field.
 		void calcCellMineCount();

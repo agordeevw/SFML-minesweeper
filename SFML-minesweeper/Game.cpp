@@ -26,26 +26,25 @@ void game::Game::update()
 	uint32_t cellX = (mouseArgs.mouseX - translationX) / (scaleFactor * cellSize);
 	uint32_t cellY = (mouseArgs.mouseY - translationY) / (scaleFactor * cellSize);
 
-	if (state == GameState::Menu)
-	{
-		// wait for click
-		// if click happened in the button area, generate field
-		// go to active state
-		return;
-	}
-
 	if (state == GameState::Active)
 	{
 		if (mouseArgs.leftClick)
 		{
+			if (firstClick)
+			{
+				field.reset(cellX, cellY, true);
+				firstClick = false;
+			}
+
 			if (field.open(cellX, cellY))
 			{
+				window.setTitle("YOU LOSE! Left click to restart.");
 				state = GameState::Loss;
 
 				lostCellX = cellX;
 				lostCellY = cellY;
 
-				field.open();
+				field.openUncheckedMines();
 			}
 		}
 
@@ -56,6 +55,7 @@ void game::Game::update()
 
 		if (field.checkWinCondition())
 		{
+			window.setTitle("YOU WIN! Left click to restart.");
 			state = GameState::Win;
 		}
 
@@ -64,11 +64,13 @@ void game::Game::update()
 
 	if (state == GameState::Loss || state == GameState::Win)
 	{
-		if (mouseArgs.leftClick || mouseArgs.rightClick)
+		if (mouseArgs.leftClick)
 		{
-			field = Field(field.getWidth(), field.getHeight());
+			// TODO: rethink this place, reset usage is bad here
+			field.reset(0, 0);
 			firstClick = true;
 			state = GameState::Active;
+			window.setTitle("Minesweeper!");
 		}
 
 		return;

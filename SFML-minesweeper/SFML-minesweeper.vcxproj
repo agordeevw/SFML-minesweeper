@@ -163,6 +163,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cellSheetData.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Game.h" />
   </ItemGroup>

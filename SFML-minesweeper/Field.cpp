@@ -81,11 +81,12 @@ namespace game
 		}
 	}
 
-	void Field::open()
+	void Field::openUncheckedMines()
 	{
 		for (auto &cell : cells)
 		{
-			cell |= CellMasks::isOpen;
+			if ((cell & CellMasks::hasMine) && !(cell & CellMasks::isChecked))
+				cell |= CellMasks::isOpen;
 		}
 	}
 
@@ -164,7 +165,7 @@ namespace game
 		return true;
 	}
 
-	void Field::generateMines(float_t minesProba)
+	void Field::reset(uint32_t startCol, uint32_t startRow, bool keepChecked)
 	{
 		// Initialize random generator
 		auto seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -178,13 +179,25 @@ namespace game
 		{
 			for (uint32_t j = 0; j < width; j++)
 			{
-				if (distr(generator) <= minesProba)
+				bool keepCellChecked = keepChecked && (cells[width * i + j] & CellMasks::isChecked);
+				if (distr(generator) <= 0.2f)
 				{
 					cells[width * i + j] = CellMasks::hasMine;
 					totalMines++;
 				}
+				else
+				{
+					cells[width * i + j] = 0;
+				}
+
+				if (keepCellChecked)
+					cells[width * i + j] |= CellMasks::isChecked;
 			}
 		}
+
+		cells[width * startRow + startCol] &= ~CellMasks::hasMine;
+
+		calcCellMineCount();
 	}
 
 	void Field::calcCellMineCount()
