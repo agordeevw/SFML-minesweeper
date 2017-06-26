@@ -97,7 +97,6 @@ void game::Game::update()
 			field.reset(0, 0);
 			firstClick = true;
 			state = GameState::Active;
-			window.setTitle("Minesweeper!");
 		}
 
 		return;
