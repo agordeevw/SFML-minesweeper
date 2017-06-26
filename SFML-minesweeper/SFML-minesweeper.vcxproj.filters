@@ -10,7 +10,4 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="cellSheetData.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resources\Textures\cells.png" />
-  </ItemGroup>
 </Project>
