@@ -23,8 +23,15 @@ void game::Game::processInput()
 
 void game::Game::update()
 {
-	uint32_t cellX = (mouseArgs.mouseX - translationX) / (scaleFactor * cellSize);
-	uint32_t cellY = (mouseArgs.mouseY - translationY) / (scaleFactor * cellSize);
+	uint32_t cellX = (mouseArgs.mouseX - translationX) / (scaleFactor * cellSize);;
+	uint32_t cellY = (mouseArgs.mouseY - translationY) / (scaleFactor * cellSize);;
+
+	if (mouseArgs.mouseX < 0 || mouseArgs.mouseX > window.getSize().x ||
+		mouseArgs.mouseY < 0 || mouseArgs.mouseY > window.getSize().y)
+	{
+		cellX = -1;
+		cellY = -1;
+	}
 
 	if (state == GameState::Active)
 	{
