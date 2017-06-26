@@ -126,7 +126,10 @@ void game::Game::drawField()
 
 			if (cellState == CellState::Checked)
 			{
-				setTile(CellTiles::Checked);
+				if (state == GameState::Loss && !field.hasMineAt(x, y))
+					setTile(CellTiles::WrongChecked);
+				else
+					setTile(CellTiles::Checked);
 			}
 
 			if (cellState == CellState::OpenMine)
