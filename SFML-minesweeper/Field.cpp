@@ -167,6 +167,9 @@ namespace game
 
 	void Field::reset(uint32_t startCol, uint32_t startRow, bool keepChecked)
 	{
+		totalMines = 0;
+		totalChecks = 0;
+
 		// Initialize random generator
 		auto seed = std::chrono::system_clock::now().time_since_epoch().count();
 		std::default_random_engine generator(seed);
@@ -191,7 +194,10 @@ namespace game
 				}
 
 				if (keepCellChecked)
+				{
+					totalChecks++;
 					cells[width * i + j] |= CellMasks::isChecked;
+				}
 			}
 		}
 
