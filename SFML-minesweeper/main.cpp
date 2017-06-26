@@ -1,10 +1,6 @@
 #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
-#include <fstream>
-#include <iomanip>
-
 #include <SFML/Graphics.hpp>
-#include <SOIL.h>
 
 #include "cellsData.h"
 #include "iconData.h"
@@ -15,26 +11,22 @@ void main()
 {
 	if (cellsData == nullptr || iconData == nullptr)
 	{
-		throw std::exception("Image Data Headers aren't initialized! Use imageDataGen to do so.");
+		// Image Data Headers aren't initialized! Use imageDataGen to do so.
 
 		return;
 	}
 
 	sf::Image cells;
-	cells.create(20, 280, cellsData);
-
-	sf::Image icon;
-	icon.create(20, 20, iconData);
+	cells.create(cellsWidth, cellsHeight, cellsData);
 	
 	sf::Texture cellSheet;
 	cellSheet.loadFromImage(cells);
-
 
 	// Initialize window
 	sf::RenderWindow window(sf::VideoMode(600, 400), "Minesweep!", sf::Style::Close);
 	window.setVerticalSyncEnabled(true);
 
-	window.setIcon(20, 20, icon.getPixelsPtr());
+	window.setIcon(iconWidth, iconHeight, iconData);
 
 	game::Game game(window, cellSheet, 30, 20);
 
