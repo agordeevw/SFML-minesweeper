@@ -22,7 +22,7 @@ namespace game
 	class Game
 	{
 		enum GameState { Active, Win, Loss };
-		enum CellTiles  { Closed, SemiClosed, Checked, ZeroMines, Mine = 12};
+		enum CellTiles  { Closed, SemiClosed, Checked, WrongChecked, ZeroMines, Mine = 13};
 
 		GameState state;
 
@@ -48,7 +48,7 @@ namespace game
 			state(GameState::Active),
 			window(window),
 			cellSprite(cellSheet),
-			cellSize(cellSheet.getSize().y),
+			cellSize(cellSheet.getSize().x),
 			field(fieldWidth, fieldHeight),
 			firstClick(true),
 			lostCellX(-1),

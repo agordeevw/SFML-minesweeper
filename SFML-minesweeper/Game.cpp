@@ -96,7 +96,7 @@ void game::Game::init()
 
 void game::Game::setTile(int cellTileCode)
 {
-	cellSprite.setTextureRect(sf::IntRect((cellTileCode)* cellSize, 0, cellSize, cellSize));
+	cellSprite.setTextureRect(sf::IntRect(0, (cellTileCode)* cellSize, cellSize, cellSize));
 }
 
 void game::Game::drawField()
