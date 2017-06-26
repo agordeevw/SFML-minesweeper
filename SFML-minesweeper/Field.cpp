@@ -172,36 +172,51 @@ namespace game
 
 		// Initialize random generator
 		auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+
 		std::default_random_engine generator(seed);
-		std::uniform_real_distribution<float_t> distr(0.0f, 1.0f);
+		std::uniform_int_distribution<uint32_t> distr(0, height * width - 1);
 
-		uint32_t totalCells = width * height;
-
-		// Randomly assign mines to cells with given probability
+		// Clear field while setting back checked flags
 		for (uint32_t i = 0; i < height; i++)
 		{
 			for (uint32_t j = 0; j < width; j++)
 			{
-				bool keepCellChecked = keepChecked && (cells[width * i + j] & CellMasks::isChecked);
-				if (distr(generator) <= 0.2f)
-				{
-					cells[width * i + j] = CellMasks::hasMine;
-					totalMines++;
-				}
-				else
-				{
-					cells[width * i + j] = 0;
-				}
+				auto loc = width * i + j;
+
+				bool keepCellChecked = keepChecked && (cells[loc] & CellMasks::isChecked);
+
+				// clear
+				cells[loc] = 0;
 
 				if (keepCellChecked)
 				{
 					totalChecks++;
-					cells[width * i + j] |= CellMasks::isChecked;
+					cells[loc] = CellMasks::isChecked;
 				}
+				
 			}
 		}
 
-		cells[width * startRow + startCol] &= ~CellMasks::hasMine;
+		// Randomly assign mines to cells
+		while (totalMines < 99)
+		{
+			auto loc = distr(generator);
+			auto col = loc % width;
+			auto row = loc / width;
+
+			if (col == startCol && row == startRow)
+				continue;
+
+			if (cells[loc] & CellMasks::hasMine)
+			{
+				continue;
+			}
+			else
+			{
+				cells[loc] |= CellMasks::hasMine;
+				totalMines++;
+			}
+		}
 
 		calcCellMineCount();
 	}

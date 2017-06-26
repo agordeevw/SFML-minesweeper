@@ -25,20 +25,7 @@ void game::Game::processInput()
 
 void game::Game::update()
 {
-	if (firstClick)
-	{
-		window.setTitle("Minesweeper!");
-	}
-	else
-	{
-		std::stringstream title;
-
-		auto minesLeft = (int32_t)field.getTotalMines() - (int32_t)field.getTotalChecks();
-
-		title << "Minesweeper! Mines left: " << minesLeft;
-
-		window.setTitle(title.str());
-	}
+	
 
 	uint32_t cellX = (mouseArgs.mouseX - translationX) / (scaleFactor * cellSize);;
 	uint32_t cellY = (mouseArgs.mouseY - translationY) / (scaleFactor * cellSize);;
@@ -52,6 +39,22 @@ void game::Game::update()
 
 	if (state == GameState::Active)
 	{
+		// set title
+		if (firstClick)
+		{
+			window.setTitle("Minesweeper! Mines left: 99");
+		}
+		else
+		{
+			std::stringstream title;
+
+			auto minesLeft = (int32_t)field.getTotalMines() - (int32_t)field.getTotalChecks();
+
+			title << "Minesweeper! Mines left: " << minesLeft;
+
+			window.setTitle(title.str());
+		}
+
 		if (mouseArgs.leftClick)
 		{
 			if (firstClick)
