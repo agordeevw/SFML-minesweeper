@@ -43,8 +43,11 @@ void main()
 
 		window.clear();
 
-		game.processInput();
-		game.update();
+		if (window.hasFocus())
+		{
+			game.processInput();
+			game.update();
+		}
 		game.draw();
 
 		window.display();
